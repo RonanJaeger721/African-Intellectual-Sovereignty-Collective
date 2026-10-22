@@ -1,2 +1,5 @@
 outputs/
 work/
+.env*
+.vercel/
+.git/
