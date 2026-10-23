@@ -12,7 +12,7 @@
     };
     const animated = [
       ...root.querySelectorAll(
-        ".section-heading, .editor-note, .lead-story, .side-story, .pillar, .renaissance-visual, .renaissance-copy, .method-strip-inner > div, .pulse-inner > div, .pulse-form, .partnership-band .wrap > *, .methodology-grid section, .research-item, .article section",
+        ".section-heading, .editor-note, .lead-story, .side-story, .pillar, .renaissance-visual, .renaissance-copy, .method-strip-inner > div, .pulse-inner > div, .pulse-form, .partnership-band .wrap > *, .methodology-grid section, .research-item, .article section, .vision-section > div, .pulse-country, .edition-feature > *, .impact-numbers > div, .funder-evidence-group, .benefit-list > div, .budget-list > div, .funding-tiers > section",
       ),
     ];
 

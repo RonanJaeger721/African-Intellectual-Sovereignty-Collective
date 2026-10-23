@@ -161,7 +161,7 @@ const articles = [
 ];
 const categoryNames = {
   governance: "Governance",
-  corruption: "Accountability",
+  corruption: "Anti-Corruption",
   renaissance: "Renaissance",
 };
 const countryNotes = {
@@ -186,7 +186,7 @@ const tags = (a) =>
 const meta = (a) =>
   `<div class="story-meta"><span>${a.country}</span><span>${a.minutes} min read</span></div>`;
 const notice =
-  '<div class="notice">Launch edition in development. These editorial previews set out our research questions. They are not verified country reports or live governance ratings.</div>';
+  '<div class="notice">The supplied Zambia diagnostic and editorial programme appear first. Commissioned features contain the supplied briefs, not completed investigations. Additional editorial perspectives are labelled as previews.</div>';
 const pageHead = (kicker, title, description) =>
   `<header class="page-head wrap reveal"><span class="eyebrow section-label">${kicker}</span><h1>${title}</h1><p>${description}</p></header>`;
 
@@ -212,7 +212,9 @@ function home() {
     .join(
       "",
     )}</select><p class="country-description" aria-live="polite">${countryNotes.Zambia}</p><a class="country-link text-link" href="#/country/Zambia">Explore the perspective ${arrow}</a></div></div><div class="hero-scroll">Scroll for a fuller picture ↓</div></div></section>
-    <div class="wrap editor-note"><span class="eyebrow">A note from the desk</span><p>Not just what is broken. Not just what is working. We examine the institutions, decisions, and ideas shaping Africa, with evidence at the centre.</p></div>
+    ${Publication.introduction()}
+    ${Publication.pulseGrid()}
+    <section class="wrap edition-feature"><div><span class="eyebrow section-label">From the supplied edition / Zambia 2026</span><h2>Beyond the ballot.<br><em>The democratic stress test.</em></h2><p>Read the governance diagnostic, explore the five-part election timeline and download the original pulse-check and observer graphics.</p>${link("#/zambia-2026", "Open the report & visual dossier")}</div><a href="#/zambia-2026"><img src="assets/editorial/Pulse-Check-Zambia.webp" alt="Zambia pulse check: five governance stress-test measures" width="900" height="1002" loading="lazy"></a></section>
     <section class="journal wrap"><span class="eyebrow section-label">On our editorial agenda</span><div class="section-heading"><h2>Look a little <em>closer.</em></h2>${link("#/diagnostics", "All perspectives")}</div><div class="journal-grid"><a class="lead-story" href="#/read/${lead.slug}"><div class="story-art"><img src="assets/africa.svg" width="800" height="760" alt="A geographic illustration of Africa"><span class="art-caption">The institutions<br>behind the ballot</span><span class="art-number" aria-hidden="true">01</span></div>${tags(lead)}<h3>${lead.title}</h3><p>${lead.excerpt}</p>${meta(lead)}</a><div>${[articles[1], articles[2], articles[3]].map((a) => `<a class="side-story" href="#/read/${a.slug}">${tags(a)}<h3>${a.title}</h3><p>${a.excerpt}</p>${meta(a)}</a>`).join("")}</div></div></section>
     ${catalogue()}
     <section class="perspective"><div class="wrap perspective-inner"><div><span class="eyebrow section-label">Our point of view</span><h2>A continent.<br>Many realities.<br><em>A fuller picture.</em></h2><p class="perspective-intro">Africa is not a single score or a single story. Our work connects rigorous diagnosis with accountability and the possibility of progress.</p>${link("#/methodology", "How we approach the work")}<div class="perspective-position" aria-hidden="true"><span class="perspective-marker">01</span><span class="perspective-track"><span></span></span><span>03</span></div></div><div>${[
@@ -225,8 +227,8 @@ function home() {
       ],
       [
         "02",
-        "Public accountability",
-        "Follow the documents, the money, and the institutional response. Scrutiny with a clear evidence trail.",
+        "Anti-Corruption",
+        "State capture, procurement fraud, illicit financial flows, and mining opacity. Follow the documents, the money, and the institutional response.",
         "accountability",
         "Follow the evidence",
       ],
@@ -245,7 +247,7 @@ function home() {
       .join("")}</div></div></section>
     <section class="renaissance wrap"><div class="renaissance-layout"><div class="renaissance-visual"><img src="assets/africa.svg" alt="Africa, the focus of our progress reporting" width="800" height="760" loading="lazy"><div class="visual-type" aria-hidden="true">Africa,<br><em>in the making.</em></div></div><div class="renaissance-copy"><span class="eyebrow section-label">The African Renaissance</span><h2>There is another<br>story to <em>tell.</em></h2><p>The continent is also a place of invention, institution-building, and everyday ambition. These stories deserve the same curiosity and scrutiny as the crises.</p><div class="topic-line"><span>Innovation</span><span>Clean energy</span><span>Financial inclusion</span><span>Public health</span></div>${link("#/renaissance", "Explore African progress")}</div></div></section>
     <section class="method-strip"><div class="wrap method-strip-inner"><div><span class="eyebrow section-label">The standard behind the story</span><h2>Evidence before <em>everything.</em></h2></div><div><p>A useful diagnostic shows its working. We distinguish documented facts, allegations, analysis, and unanswered questions, so readers can form their own judgment.</p>${link("#/methodology", "Read our editorial approach")}</div></div></section>
-    ${pulse()}<section class="partnership-band"><div class="wrap"><div><span class="eyebrow">Build the work with us</span><h2>Better questions.<br>Stronger institutions. <em>Shared progress.</em></h2></div><a class="button dark" href="#/partners">Explore a partnership ${arrow}</a></div></section>`;
+    ${Publication.metrics()}${pulse()}<section class="partnership-band"><div class="wrap"><div><span class="eyebrow">Build the work with us</span><h2>Better questions.<br>Stronger institutions. <em>Shared progress.</em></h2></div><a class="button dark" href="#/partners">Explore a partnership ${arrow}</a></div></section>`;
 }
 
 function room(category = "all", country = "") {
@@ -265,14 +267,18 @@ function renderRows(category = "all", query = "", country = "") {
         .toLowerCase()
         .includes(query.toLowerCase()),
   );
-  document.querySelector(".reading-list").innerHTML = filtered.length
+  const edition = Publication.editionRows(category, query, country);
+  const previews = filtered.length
     ? filtered
         .map(
           (a, i) =>
             `<article class="reading-row"><span class="reading-num">${String(i + 1).padStart(2, "0")}</span><div><span class="tag eyebrow">${a.tag}</span><h2><a href="#/read/${a.slug}">${a.title}</a></h2><p>${a.excerpt}</p></div><div class="reading-side"><span>Editorial preview<br>${a.country} · ${a.minutes} min</span><a href="#/read/${a.slug}">Read perspective ↗</a></div></article>`,
         )
         .join("")
-    : '<p class="empty-state">No perspectives match your search. Try another topic or country.</p>';
+    : "";
+  document.querySelector(".reading-list").innerHTML =
+    edition + previews ||
+    '<p class="empty-state">No perspectives match your search. Try another topic or country.</p>';
 }
 
 function accountability() {
@@ -329,7 +335,7 @@ function methodology() {
     .map((a) => `<section><h2>${a[0]}</h2><p>${a[1]}</p></section>`)
     .join(
       "",
-    )}</div><h2 class="serif" style="font-size:34px">A score should earn your trust.</h2><div class="notice">The package proposes a four-part governance index. Its source weights, normalisation, release dates, and validation still need to be established. We have withheld the demonstration scores rather than publish an unvalidated ranking.</div><h2 class="serif" style="font-size:29px">Reference institutions</h2><p style="color:var(--muted);font-size:14px;margin-top:15px">Starting points for research, not a statement of partnership or endorsement.</p><div class="sources">${[
+    )}</div><h2 class="serif" style="font-size:34px">A score should earn your trust.</h2><div class="notice">The package proposes a four-part governance index: electoral integrity, state capacity, rule of law and economic management. Its source weights, normalisation and validation still need to be established. The launch package's scores are preserved as explicitly illustrative edition data, not independently validated rankings. The anti-corruption register uses separate illustrative scores and must not be read as the Transparency International CPI.</div><h2 class="serif" style="font-size:29px">Reference institutions</h2><p style="color:var(--muted);font-size:14px;margin-top:15px">Starting points for research, not a statement of partnership or endorsement.</p><div class="sources">${[
     ["Mo Ibrahim Foundation", "https://mo.ibrahim.foundation/"],
     ["Transparency International", "https://www.transparency.org/"],
     [
@@ -461,7 +467,12 @@ function render() {
     route === "country"
   ) {
     category = route === "renaissance" ? "renaissance" : "all";
-    if (route === "country" && !countryNotes[country]) {
+    if (
+      route === "country" &&
+      Publication.countries.some((c) => c[0] === country)
+    ) {
+      main.innerHTML = Publication.country(country);
+    } else if (route === "country" && !countryNotes[country]) {
       main.innerHTML =
         pageHead(
           "Country research",
@@ -504,17 +515,28 @@ function render() {
           ? "The African Renaissance"
           : "The Reading Room";
   } else if (route === "accountability" || route === "corruption") {
-    main.innerHTML = accountability();
-    title = "Public Accountability";
-  } else if (
-    route === "methodology" ||
-    route === "impact" ||
-    route === "about"
-  ) {
+    main.innerHTML = Publication.tracker();
+    title = "Anti-Corruption Tracker";
+  } else if (route === "impact") {
+    main.innerHTML = Publication.impact();
+    title = "Impact & Methodology";
+  } else if (route === "about") {
+    main.innerHTML = Publication.about();
+    title = "Our Vision & Mission";
+  } else if (route === "contact") {
+    main.innerHTML = Publication.contactPage();
+    title = "Contact";
+  } else if (route === "assignment") {
+    main.innerHTML = Publication.assignment(segments[1]);
+    title = "Editorial Programme";
+  } else if (route === "zambia-2026") {
+    main.innerHTML = Publication.zambia();
+    title = "Zambia 2026: The Democratic Stress Test";
+  } else if (route === "methodology") {
     main.innerHTML = methodology();
     title = "Our Approach";
   } else if (route === "partners") {
-    main.innerHTML = partners();
+    main.innerHTML = Publication.partners();
     title = "Partnerships";
   } else if (route === "pulse") {
     main.innerHTML =
@@ -572,6 +594,7 @@ function render() {
   header.classList.remove("is-hidden");
   window.scrollTo({ top: 0, behavior: "instant" });
   setupPulse();
+  Publication.setup(main);
   experienceCleanup = window.StethoscopeExperience.mount(main, reducedMotion);
   document.querySelector(".share-button")?.addEventListener("click", () => {
     document.querySelector("#share-url").value = location.href;

@@ -11,6 +11,7 @@ Serve the repository root with a static HTTP server. The current development pre
 - index.html: publication shell and metadata
 - styles.css: responsive editorial design
 - script.js: content, hash routes and interactions
+- publication.js: restored publisher vision, funder case, country snapshots, monitoring register and visual dossier
 - experience.js: route-scoped reversible motion, reading progress and accessible auto catalogue
 - assets/: optimized map, identity, cover and partnership PDF
 - collective.html: preserved original company brochure
@@ -19,13 +20,15 @@ Serve the repository root with a static HTTP server. The current development pre
 
 ## Routes
 
-Home, #/diagnostics, #/accountability, #/renaissance, #/methodology, #/partners, #/pulse and #/privacy. Country views use #/country/Zambia, article views use #/read/beyond-the-ballot. Unknown routes display a recovery view.
+Home, #/diagnostics, #/accountability, #/renaissance, #/methodology, #/partners, #/impact, #/about, #/contact, #/zambia-2026, #/pulse and #/privacy. Nine supplied country profiles use #/country/Zambia and equivalent country names. Supplied commissioning briefs use #/assignment/mpesa and equivalent identifiers; additional editorial previews use #/read/beyond-the-ballot. Unknown routes display a recovery view.
 
 ## Content status
 
 The supplied ZIP includes a strategic blueprint, a future production architecture, a launch checklist, a content calendar, promotional graphics and a demo website. Source files are preserved locally in work/package; they are deliberately excluded from deployment.
 
-The blueprint's zero baselines contradict its audience and impact claims. Demonstration country scores, corruption rankings, readership numbers and proposed funder endorsements were not carried forward. The six reading-room pieces are newly drafted editorial previews based on the supplied research themes, not verified country reports. Approve and replace them with sourced reporting before editorial launch.
+The 23 October restoration includes the exact supplied vision and mission, three named pillars/formats, funder case and benefits, proposed budget/tiers, publisher-reported impact/audience, nine illustrative country snapshots, eight expandable monitoring topics, the Zambia diagnostic and seven original downloadable campaign graphics. Eleven supplied article titles/summaries have distinct destinations. Only Zambia has complete source report text; the others are clearly commissioning briefs. Six additional editorial previews remain explicitly labelled.
+
+Publisher-reported impact, illustrative edition scores and future strategic targets are distinguished. Scores have no reproducible validation record and are not official CPI rankings. Unsubstantiated case accusations are not presented as established findings. The confidential partnership graphic remains private; its public-facing funding summary and deck-request action are available. Target funders are not shown as existing partners. Details and outstanding requirements are recorded privately in outputs/package-restoration-audit.md.
 
 The map uses simplified public-domain Natural Earth geography from datasets/geo-countries (https://github.com/datasets/geo-countries). Highlighting indicates the selected research agenda, not a governance rating.
 
