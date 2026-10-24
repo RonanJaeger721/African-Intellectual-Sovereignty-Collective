@@ -1390,9 +1390,10 @@ nav a {
 }
 .reading-progress {
   position: fixed;
+  overflow: hidden;
   inset: 0 0 auto;
   height: 3px;
-  z-index: 50;
+  z-index: 1000;
   background: #121b2e22;
   pointer-events: none;
 }
@@ -1403,6 +1404,31 @@ nav a {
   background: var(--cyan);
   transform: scaleX(0);
   transform-origin: left;
+}
+.reading-progress.is-loading > span {
+  opacity: 0;
+}
+.reading-progress.is-loading::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 35%;
+  background: var(--cyan);
+  animation: page-loading-sweep 0.85s ease-in-out infinite;
+}
+@keyframes page-loading-sweep {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(386%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reading-progress.is-loading::after {
+    animation: none;
+    width: 100%;
+  }
 }
 @media (min-width: 901px) {
   .perspective-inner {

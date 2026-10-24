@@ -54,6 +54,8 @@ The six-item field-notes catalogue derives from the shared article collection. D
 
 Scroll reveals reset above and below the viewport. Pillar progression and the article reading indicator follow both forward and reverse scrolling. The motion layer uses native IntersectionObserver/CSS transforms rather than intercepting page scrolling. Route changes dispose observers, timers and event listeners. Lucide icons are vendored under assets/icons with their license.
 
+A single fixed 3px cyan line at the top shows a loading sweep during initial/route rendering, then tracks whole-page scroll progress in both directions on every route. It stays above the directional header, resets on navigation and replaces the former article-only indicator. Reduced-motion uses a static loading line instead of the sweep.
+
 ## Deployment
 
 Vercel: Framework Other; repository root; no build or install command; output directory '.'. The publication deploys through the african-governance-stethoscope project. Source is maintained in the existing African-Intellectual-Sovereignty-Collective GitHub repository. Local .vercel metadata, work/, outputs/, payment PDFs and original planning documents are excluded from publication.

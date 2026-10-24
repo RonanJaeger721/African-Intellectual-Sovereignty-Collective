@@ -6,6 +6,18 @@ const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const contact = "governancestethoscope@gmail.com";
 let experienceCleanup = () => {};
 let lensCleanup = () => {};
+const pageProgress = document.querySelector(".reading-progress");
+let pageLoadTimer;
+function finishPageLoading() {
+  if (document.readyState !== "complete") return;
+  clearTimeout(pageLoadTimer);
+  pageLoadTimer = setTimeout(() => {
+    pageProgress.classList.remove("is-loading");
+    pageProgress.setAttribute("aria-busy", "false");
+    window.StethoscopeExperience.update();
+  }, 240);
+}
+window.addEventListener("load", finishPageLoading, { once: true });
 const articles = [
   {
     slug: "beyond-the-ballot",
@@ -450,6 +462,9 @@ function setupPulse() {
 }
 
 function render() {
+  clearTimeout(pageLoadTimer);
+  pageProgress.classList.add("is-loading");
+  pageProgress.setAttribute("aria-busy", "true");
   lensCleanup();
   experienceCleanup();
   const segments = location.hash.replace(/^#\/?/, "").split("/");
@@ -603,6 +618,7 @@ function render() {
   setupPulse();
   Publication.setup(main);
   experienceCleanup = window.StethoscopeExperience.mount(main, reducedMotion);
+  requestAnimationFrame(finishPageLoading);
   document.querySelector(".share-button")?.addEventListener("click", () => {
     document.querySelector("#share-url").value = location.href;
     document.querySelector("#share-status").textContent = "";

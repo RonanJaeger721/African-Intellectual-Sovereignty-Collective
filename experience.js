@@ -50,18 +50,12 @@
     const progressTrack = root.querySelector(".perspective-track > span");
     const visual = root.querySelector(".renaissance-visual .visual-type");
     const article = root.querySelector(".article");
-    let progressBar;
-    if (article && root.querySelector(".share-button")) {
-      progressBar = document.createElement("div");
-      progressBar.className = "reading-progress";
-      progressBar.setAttribute("role", "progressbar");
-      progressBar.setAttribute("aria-label", "Reading progress");
-      progressBar.setAttribute("aria-valuemin", "0");
-      progressBar.setAttribute("aria-valuemax", "100");
-      progressBar.innerHTML = "<span></span>";
-      document.body.append(progressBar);
-      cleanups.push(() => progressBar.remove());
-    }
+    const progressBar = document.querySelector(".reading-progress");
+    const readingArticle = article && root.querySelector(".share-button");
+    progressBar?.setAttribute(
+      "aria-label",
+      readingArticle ? "Reading progress" : "Page scroll progress",
+    );
 
     update = () => {
       if (perspective) {
@@ -88,12 +82,12 @@
           );
       }
       if (progressBar) {
-        const rect = article.getBoundingClientRect();
         const progress = Math.min(
           1,
           Math.max(
             0,
-            (120 - rect.top) / Math.max(1, rect.height - innerHeight + 120),
+            scrollY /
+              Math.max(1, document.documentElement.scrollHeight - innerHeight),
           ),
         );
         progressBar.firstElementChild.style.transform = `scaleX(${progress})`;
