@@ -5,6 +5,7 @@ const menu = document.querySelector(".menu-toggle");
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const contact = "governancestethoscope@gmail.com";
 let experienceCleanup = () => {};
+let lensCleanup = () => {};
 const articles = [
   {
     slug: "beyond-the-ballot",
@@ -177,6 +178,11 @@ const countryNotes = {
     "The energy transition, public value, and the communities behind the infrastructure.",
   Zimbabwe:
     "Constitutional governance, public records, and institutional resilience.",
+  Ghana: "Democratic transition, gold exports, and revenue transparency.",
+  Nigeria: "Economic management, procurement oversight, and public health.",
+  Rwanda: "Institutional capacity, innovation, and public accountability.",
+  Botswana: "Democratic consolidation and public procurement safeguards.",
+  Senegal: "Political transition, regional integration, and infrastructure.",
 };
 const arrow = '<span aria-hidden="true">↗</span>';
 const link = (url, label) =>
@@ -201,8 +207,8 @@ function catalogue() {
 }
 
 function home() {
-  const lead = articles[0];
-  return `<section class="hero"><div class="hero-map" aria-hidden="true"></div><div class="wrap hero-inner reveal"><div class="hero-topline"><span class="edition-note">Independent perspective. African priorities.</span><span>The launch edition · October 2026</span></div><h1>The African<br>Governance<br><em>Stethoscope.</em></h1><p class="hero-description">Read the continent beyond the headline.<br>Governance, accountability, and the people<br>building a better Africa.</p><div class="hero-bottom"><a class="button" href="#/diagnostics">Enter the reading room ${arrow}</a><div class="country-console"><label class="eyebrow" for="country-select">The continental lens · Research agenda</label><select class="country-selector" id="country-select">${Object.keys(
+  const lead = articles[1];
+  return `<section class="hero"><div class="hero-map" aria-hidden="true"></div><div class="wrap hero-inner reveal"><div class="hero-topline"><span class="edition-note">Independent perspective. African priorities.</span><span>The launch edition · October 2026</span></div><h1>The African<br>Governance<br><em>Stethoscope.</em></h1><p class="hero-description">Read the continent beyond the headline.<br>Governance, accountability, and the people<br>building a better Africa.</p><div class="hero-bottom"><a class="button" href="#/diagnostics">Enter the reading room ${arrow}</a><div class="country-console"><label class="eyebrow" for="country-select">The continental lens · Research agenda</label><div class="lens-heading"><span class="lens-country" aria-live="off">Zambia</span><select class="country-selector" id="country-select">${Object.keys(
     countryNotes,
   )
     .map(
@@ -211,11 +217,11 @@ function home() {
     )
     .join(
       "",
-    )}</select><p class="country-description" aria-live="polite">${countryNotes.Zambia}</p><a class="country-link text-link" href="#/country/Zambia">Explore the perspective ${arrow}</a></div></div><div class="hero-scroll">Scroll for a fuller picture ↓</div></div></section>
+    )}</select><button class="lens-toggle" aria-label="Pause country tour" title="Pause country tour"><img src="assets/icons/pause.svg" width="18" height="18" alt=""></button></div><p class="country-description" aria-live="off">${countryNotes.Zambia}</p><div class="lens-controls"><span class="lens-count">01 / 11</span><button class="lens-choose">Choose country ${arrow}</button></div><a class="country-link text-link" href="#/country/Zambia">Explore the perspective ${arrow}</a></div></div><div class="hero-scroll">Scroll for a fuller picture ↓</div></div></section>
     ${Publication.introduction()}
     ${Publication.pulseGrid()}
     <section class="wrap edition-feature"><div><span class="eyebrow section-label">From the supplied edition / Zambia 2026</span><h2>Beyond the ballot.<br><em>The democratic stress test.</em></h2><p>Read the governance diagnostic, explore the five-part election timeline and download the original pulse-check and observer graphics.</p>${link("#/zambia-2026", "Open the report & visual dossier")}</div><a href="#/zambia-2026"><img src="assets/editorial/Pulse-Check-Zambia.webp" alt="Zambia pulse check: five governance stress-test measures" width="900" height="1002" loading="lazy"></a></section>
-    <section class="journal wrap"><span class="eyebrow section-label">On our editorial agenda</span><div class="section-heading"><h2>Look a little <em>closer.</em></h2>${link("#/diagnostics", "All perspectives")}</div><div class="journal-grid"><a class="lead-story" href="#/read/${lead.slug}"><div class="story-art"><img src="assets/africa.svg" width="800" height="760" alt="A geographic illustration of Africa"><span class="art-caption">The institutions<br>behind the ballot</span><span class="art-number" aria-hidden="true">01</span></div>${tags(lead)}<h3>${lead.title}</h3><p>${lead.excerpt}</p>${meta(lead)}</a><div>${[articles[1], articles[2], articles[3]].map((a) => `<a class="side-story" href="#/read/${a.slug}">${tags(a)}<h3>${a.title}</h3><p>${a.excerpt}</p>${meta(a)}</a>`).join("")}</div></div></section>
+    <section class="journal wrap"><span class="eyebrow section-label">On our editorial agenda</span><div class="section-heading"><h2>Look a little <em>closer.</em></h2>${link("#/diagnostics", "All perspectives")}</div><div class="journal-grid"><div><a class="lead-story" href="#/read/${lead.slug}"><div class="story-art editorial-photo"><img src="assets/photos/parliament-1280.webp" srcset="assets/photos/parliament-640.webp 640w, assets/photos/parliament-1280.webp 1280w" sizes="(max-width: 900px) 100vw, 55vw" width="1280" height="736" loading="lazy" alt="South African Parliament seen from the Company Gardens in Cape Town"></div>${tags(lead)}<h3>${lead.title}</h3><p>${lead.excerpt}</p>${meta(lead)}</a><p class="photo-credit">Parliament, Cape Town · Jonathan Beech · <a href="#/credits">Photo credits</a></p></div><div>${[articles[0], articles[2], articles[3]].map((a) => `<a class="side-story" href="#/read/${a.slug}">${tags(a)}<h3>${a.title}</h3><p>${a.excerpt}</p>${meta(a)}</a>`).join("")}</div></div></section>
     ${catalogue()}
     <section class="perspective"><div class="wrap perspective-inner"><div><span class="eyebrow section-label">Our point of view</span><h2>A continent.<br>Many realities.<br><em>A fuller picture.</em></h2><p class="perspective-intro">Africa is not a single score or a single story. Our work connects rigorous diagnosis with accountability and the possibility of progress.</p>${link("#/methodology", "How we approach the work")}<div class="perspective-position" aria-hidden="true"><span class="perspective-marker">01</span><span class="perspective-track"><span></span></span><span>03</span></div></div><div>${[
       [
@@ -245,7 +251,8 @@ function home() {
           `<article class="pillar"><span class="pillar-num">${p[0]}</span><div><h3>${p[1]}</h3><p>${p[2]}</p><a href="#/${p[3]}">${p[4]} ↗</a></div></article>`,
       )
       .join("")}</div></div></section>
-    <section class="renaissance wrap"><div class="renaissance-layout"><div class="renaissance-visual"><img src="assets/africa.svg" alt="Africa, the focus of our progress reporting" width="800" height="760" loading="lazy"><div class="visual-type" aria-hidden="true">Africa,<br><em>in the making.</em></div></div><div class="renaissance-copy"><span class="eyebrow section-label">The African Renaissance</span><h2>There is another<br>story to <em>tell.</em></h2><p>The continent is also a place of invention, institution-building, and everyday ambition. These stories deserve the same curiosity and scrutiny as the crises.</p><div class="topic-line"><span>Innovation</span><span>Clean energy</span><span>Financial inclusion</span><span>Public health</span></div>${link("#/renaissance", "Explore African progress")}</div></div></section>
+    <section class="renaissance wrap"><div class="renaissance-layout"><figure><div class="renaissance-visual editorial-photo"><img src="assets/photos/nairobi-1280.webp" srcset="assets/photos/nairobi-640.webp 640w, assets/photos/nairobi-1280.webp 1280w" sizes="(max-width: 900px) 100vw, 50vw" alt="Nairobi skyline seen from Uhuru Park, Kenya" width="1280" height="960" loading="lazy"></div><figcaption class="photo-credit">Nairobi, Kenya · Raidarmax · <a href="#/credits">Photo credits</a></figcaption></figure><div class="renaissance-copy"><span class="eyebrow section-label">The African Renaissance</span><h2>There is another<br>story to <em>tell.</em></h2><p>The continent is also a place of invention, institution-building, and everyday ambition. These stories deserve the same curiosity and scrutiny as the crises.</p><div class="topic-line"><span>Innovation</span><span>Clean energy</span><span>Financial inclusion</span><span>Public health</span></div>${link("#/renaissance", "Explore African progress")}</div></div></section>
+    <section class="solar-story wrap"><figure><a href="#/assignment/noor"><img src="assets/photos/noor-1280.webp" srcset="assets/photos/noor-640.webp 640w, assets/photos/noor-1280.webp 1280w" sizes="(max-width: 1280px) 100vw, 1280px" alt="Fields of solar collectors at Noor I and II near Ouarzazate, Morocco" width="1280" height="596" loading="lazy"></a><figcaption><div><span class="eyebrow section-label">Green Africa / Morocco</span><h2>Progress you can <em>see.</em></h2>${link("#/assignment/noor", "Inside the Noor editorial brief")}</div><p class="photo-credit">Noor I & II, Ouarzazate · Richard Allaway<br><a href="#/credits">Photo credits</a></p></figcaption></figure></section>
     <section class="method-strip"><div class="wrap method-strip-inner"><div><span class="eyebrow section-label">The standard behind the story</span><h2>Evidence before <em>everything.</em></h2></div><div><p>A useful diagnostic shows its working. We distinguish documented facts, allegations, analysis, and unanswered questions, so readers can form their own judgment.</p>${link("#/methodology", "Read our editorial approach")}</div></div></section>
     ${Publication.metrics()}${pulse()}<section class="partnership-band"><div class="wrap"><div><span class="eyebrow">Build the work with us</span><h2>Better questions.<br>Stronger institutions. <em>Shared progress.</em></h2></div><a class="button dark" href="#/partners">Explore a partnership ${arrow}</a></div></section>`;
 }
@@ -388,19 +395,19 @@ async function setupMap() {
   const container = document.querySelector(".hero-map");
   if (!container) return;
   const select = document.querySelector("#country-select");
+  const description = document.querySelector(".country-description");
+  const countryLink = document.querySelector(".country-link");
   const changeCountry = (value) => {
     select.value = value;
-    document.querySelector(".country-description").textContent =
-      countryNotes[value];
-    document.querySelector(".country-link").href =
-      "#/country/" + encodeURIComponent(value);
+    description.textContent = countryNotes[value];
+    countryLink.href = "#/country/" + encodeURIComponent(value);
     container
       .querySelectorAll("path")
       .forEach((p) =>
         p.classList.toggle("is-active", p.dataset.country === value),
       );
   };
-  select.addEventListener("change", () => changeCountry(select.value));
+  lensCleanup = window.mountContinentalLens(main, changeCountry, reducedMotion);
   try {
     if (!mapMarkup) {
       const res = await fetch("assets/africa.svg");
@@ -419,10 +426,6 @@ async function setupMap() {
           Boolean(countryNotes[p.dataset.country]),
         ),
       );
-    container.addEventListener("click", (e) => {
-      const name = e.target.closest("[data-country]")?.dataset.country;
-      if (countryNotes[name]) changeCountry(name);
-    });
     changeCountry(select.value);
   } catch {
     container.innerHTML =
@@ -447,6 +450,7 @@ function setupPulse() {
 }
 
 function render() {
+  lensCleanup();
   experienceCleanup();
   const segments = location.hash.replace(/^#\/?/, "").split("/");
   const route = segments[0] || "home";
@@ -523,6 +527,9 @@ function render() {
   } else if (route === "about") {
     main.innerHTML = Publication.about();
     title = "Our Vision & Mission";
+  } else if (route === "credits") {
+    main.innerHTML = photoCredits();
+    title = "Photography Credits";
   } else if (route === "contact") {
     main.innerHTML = Publication.contactPage();
     title = "Contact";

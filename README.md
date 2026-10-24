@@ -12,6 +12,8 @@ Serve the repository root with a static HTTP server. The current development pre
 - styles.css: responsive editorial design
 - script.js: content, hash routes and interactions
 - publication.js: restored publisher vision, funder case, country snapshots, monitoring register and visual dossier
+- lens.js: one-pass, four-second country tour with manual selection and route-scoped cleanup
+- photography.js: editorial photograph attribution and licence view
 - experience.js: route-scoped reversible motion, reading progress and accessible auto catalogue
 - assets/: optimized map, identity, cover and partnership PDF
 - collective.html: preserved original company brochure
@@ -41,6 +43,10 @@ Newsletter interest opens a prepared email to the existing editorial contact. It
 CMS, authenticated administration, newsletter provider, verified datasets, protected submissions, published case records and custom domain ownership remain to be configured. The ZIP's suggested stack is a future production brief, not evidence of connected services.
 
 ## Brand & browsing
+
+The Continental Lens tours all 11 available research lenses once at four seconds per country, updating the map highlight and destination. After the final four-second frame it switches to the native country picker. Pause/resume and early selection are available; hover, focus, off-screen panels and hidden tabs suspend the timer. Reduced-motion starts directly in manual mode. Route changes dispose the timer and listeners.
+
+Three credited contextual photographs break up the homepage: Parliament in Cape Town, Nairobi from Uhuru Park and Noor I/II near Ouarzazate. Responsive 640/1280 WebP derivatives are served locally. Full attribution, dates, original links, modification notices and licences are available at #/credits and in MEDIA-SOURCES.json. They do not imply site visits, partnerships or endorsements.
 
 Uses the supplied package's midnight navy #0B1120, blue #3B82F6, cyan #06B6D4 and cool-white palette. Darker blue links on white preserve text contrast. Fraunces and DM Sans retain the curved editorial typography.
 

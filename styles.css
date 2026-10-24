@@ -2662,3 +2662,205 @@ nav a {
     overflow-wrap: anywhere;
   }
 }
+
+/* The country tour occupies the same footprint in automatic and manual modes. */
+.country-console {
+  min-height: 205px;
+}
+.country-console [hidden] {
+  display: none !important;
+}
+.lens-heading {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  min-height: 49px;
+}
+.lens-country {
+  display: block;
+  min-width: 0;
+  flex: 1;
+  font-family: var(--serif);
+  font-size: 28px;
+  line-height: 1.3;
+}
+.lens-heading .country-selector {
+  min-width: 0;
+  margin: 0;
+  min-height: 44px;
+}
+.lens-toggle {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border: 1px solid #62768d;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  cursor: pointer;
+}
+.lens-toggle img {
+  filter: brightness(0) invert(1);
+}
+.lens-toggle:hover {
+  background: #ffffff15;
+}
+.lens-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 44px;
+  margin-bottom: 4px;
+}
+.lens-count {
+  color: #b8cadb;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+.lens-choose {
+  background: none;
+  border: 0;
+  color: #e1eaf4;
+  font: inherit;
+  font-size: 12px;
+  min-height: 44px;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.country-console .country-description {
+  height: 42px;
+  overflow-wrap: break-word;
+}
+.story-art.editorial-photo {
+  border-radius: 8px;
+}
+.story-art.editorial-photo img,
+.renaissance-visual.editorial-photo img {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  object-fit: cover;
+  opacity: 1;
+  transform: none;
+  transition: transform 0.7s;
+}
+.lead-story:hover .story-art.editorial-photo img {
+  transform: scale(1.035);
+}
+.renaissance-visual.editorial-photo {
+  border-radius: 8px;
+  aspect-ratio: 1.05;
+}
+.renaissance-visual.editorial-photo img {
+  object-position: 50% 60%;
+}
+.photo-credit {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+  margin-top: 12px;
+}
+.photo-credit a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.solar-story {
+  padding-bottom: 80px;
+}
+.renaissance-layout > figure,
+.solar-story figure {
+  margin: 0;
+  min-width: 0;
+}
+.solar-story figure > a {
+  display: block;
+  overflow: hidden;
+}
+.solar-story img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2.15;
+  object-fit: cover;
+}
+.solar-story figcaption {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 28px;
+  padding-top: 24px;
+}
+.solar-story h2 {
+  font-family: var(--serif);
+  font-size: 40px;
+  font-weight: 400;
+  margin-bottom: 16px;
+}
+.solar-story h2 em {
+  color: var(--link);
+}
+.solar-story .photo-credit {
+  text-align: right;
+}
+.photo-credits-list {
+  padding-bottom: 80px;
+}
+.photo-credits-list section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 36px;
+  margin-bottom: 48px;
+  border-top: 1px solid var(--line);
+  padding-top: 32px;
+}
+.photo-credits-list img {
+  width: 100%;
+  height: auto;
+}
+.photo-credits-list h2 {
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: 400;
+}
+.photo-credits-list p {
+  margin: 16px 0;
+  line-height: 1.7;
+  font-size: 15px;
+}
+.photo-credits-list a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+@media (max-width: 600px) {
+  .country-console {
+    display: block;
+    min-height: 205px;
+  }
+  .country-console .country-description {
+    height: 34px;
+    margin: 6px 0;
+  }
+  .country-console .eyebrow {
+    font-size: 10px;
+  }
+  .solar-story figcaption {
+    display: block;
+  }
+  .solar-story .photo-credit {
+    text-align: left;
+    margin-top: 24px;
+  }
+  .solar-story h2 {
+    font-size: 32px;
+  }
+  .solar-story img {
+    aspect-ratio: 1.5;
+  }
+  .photo-credits-list section {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
