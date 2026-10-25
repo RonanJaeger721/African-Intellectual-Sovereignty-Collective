@@ -474,7 +474,7 @@ function render() {
   experienceCleanup();
   const routePath = location.hash.startsWith("#/")
     ? location.hash.slice(2)
-    : location.pathname.replace(/^\/|\/$/g, "");
+    : location.pathname.replace(/\/index\.html$/, "").replace(/^\/|\/$/g, "");
   const segments = routePath.split("/");
   const revisedArticle = RevisedEdition.find(routePath);
   const route = segments[0] || "home";
