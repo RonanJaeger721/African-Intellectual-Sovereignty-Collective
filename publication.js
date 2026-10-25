@@ -29,7 +29,7 @@ const Publication = {
     ["South Africa", 58, "Coalition governance", "up"],
     ["Kenya", 51, "Protests & reform", "stable"],
     ["Ghana", 64, "Transition period", "up"],
-    ["Nigeria", 38, "Economic pressure", "down"],
+    ["Nigeria", 43, "Economic pressure", "not assessed"],
     ["Rwanda", 71, "Stability & growth", "up"],
     ["Botswana", 68, "Democratic consolidation", "up"],
     ["Senegal", 55, "Post-transition", "up"],
@@ -247,6 +247,7 @@ const Publication = {
     return this.assignments
       .filter(
         (a) =>
+          a[0] !== "mpesa" &&
           (category === "all" || a[2] === category) &&
           (!country || a[1] === country) &&
           a.join(" ").toLowerCase().includes(query.toLowerCase()),
@@ -271,7 +272,7 @@ const Publication = {
     return `<section class="vision-section wrap"><div><span class="eyebrow section-label">Our vision</span><h2>Diagnose honestly.<br>Hold power accountable.<br><em>Track what works.</em></h2></div><div><p class="vision-statement">${this.vision}</p><p>${this.mission}</p>${link("#/about", "The mission behind the publication")}</div></section>`;
   },
   pulseGrid() {
-    return `<section class="country-pulse wrap"><div class="section-heading"><div><span class="eyebrow section-label">Governance Pulse / October 2026 package</span><h2>The continental <em>check-up.</em></h2></div>${link("#/methodology", "How to read these scores")}</div><p class="source-note">Illustrative scores supplied in the launch edition, on a 0-100 scale. They are not independently validated rankings or real-time data. Higher is better in this demonstration.</p><div class="country-pulse-grid">${this.countries.map(([n, s, t, tr]) => `<a class="pulse-country" href="#/country/${encodeURIComponent(n)}"><span>${n === "Democratic Republic of the Congo" ? "DR Congo" : n}</span><strong>${s}<small>/100</small></strong><span class="score-track" aria-hidden="true"><i style="--score:${s}%"></i></span><span class="pulse-country-topic">${t}</span><span class="pulse-trend">Trend in supplied edition: ${tr}</span></a>`).join("")}</div></section>`;
+    return `<section class="country-pulse wrap"><div class="section-heading"><div><span class="eyebrow section-label">Governance Pulse / October 2026 edition</span><h2>The continental <em>check-up.</em></h2></div>${link("#/methodology", "How to read these scores")}</div><p class="source-note">Publisher-supplied assessments on a 0-100 scale, not independently validated rankings or real-time data. Nigeria uses the revised October Pulse Check; other scores remain illustrative launch-package data. The scoring dataset and weights have not been supplied.</p><div class="country-pulse-grid">${this.countries.map(([n, s, t, tr]) => `<a class="pulse-country" href="#/country/${encodeURIComponent(n)}"><span>${n === "Democratic Republic of the Congo" ? "DR Congo" : n}</span><strong>${s}<small>/100</small></strong><span class="score-track" aria-hidden="true"><i style="--score:${s}%"></i></span><span class="pulse-country-topic">${t}</span><span class="pulse-trend">Trend in supplied edition: ${tr}</span></a>`).join("")}</div></section>`;
   },
   about() {
     return `${pageHead("The publication", "Independent analysis.<br>African progress.", this.vision)}${this.introduction()}<section class="wrap publication-pillars">${this.pillars.map(([n, d, f, r], i) => `<section class="research-item"><span class="serif">0${i + 1}</span><div><h2>${n}</h2><p>${d}.</p></div><div><p>${f}</p>${link("#/" + r, "Explore this pillar")}</div></section>`).join("")}</section><section class="method-strip"><div class="wrap method-strip-inner"><div><span class="eyebrow">Our identity</span><h2>Knowledge. Narrative.<br><em>Sovereignty.</em></h2></div><div><p>An initiative of African Intellectual Sovereignty Collective (Pvt) Ltd, based in Harare, Zimbabwe.</p><p>Our intended audience spans international funders, policymakers, researchers, journalists and African citizens.</p>${link("#/contact", "Contact the editorial team")}</div></div></section>`;
@@ -369,17 +370,17 @@ const Publication = {
       )}</div><h2 class="funding-subtitle">A partnership at the <em>right scale.</em></h2><div class="funding-tiers">${[
       [
         "Strategic partner",
-        "$100K-250K / year",
-        "Quarterly briefings, co-branded reports, advisory participation and early access.",
+        "Programme-wide support",
+        "Post-publication briefings, transparent funding attribution and independently edited research. No pre-publication access or editorial control.",
       ],
       [
         "Institutional partner",
-        "$25K-100K / year",
+        "Annual institutional support",
         "Biannual briefings, event co-sponsorship and analyst fellowship support.",
       ],
       [
         "Project partner",
-        "$10K-50K / project",
+        "Defined project support",
         "Defined research scope, project reporting and funding attribution.",
       ],
     ]
@@ -389,7 +390,7 @@ const Publication = {
       )
       .join(
         "",
-      )}</div><p class="source-note">Proposed partnership terms, subject to agreement. Funding attribution never confers editorial control.</p><div class="deck-request"><div><span class="eyebrow section-label">The partnership deck</span><h2>Start the <em>conversation.</em></h2><p>The supplied full deck is marked confidential. Request it directly from the editorial team.</p></div><div><a class="button dark" href="mailto:${contact}?subject=Request%20the%202026-2028%20partnership%20deck">Request the full deck ${arrow}</a><a class="text-link" href="assets/partnership-brief.pdf" download>Download the public introduction ${arrow}</a></div></div></section>`;
+      )}</div><p class="source-note">Proposed partnership terms, subject to agreement and the editorial policy's 30% single-funder cap. Funding attribution never confers editorial control or pre-publication access. <a href="/about/editorial-approach/">Read the independence policy ↗</a></p><div class="deck-request"><div><span class="eyebrow section-label">The partnership deck</span><h2>Start the <em>conversation.</em></h2><p>The supplied full deck is marked confidential. Request it directly from the editorial team.</p></div><div><a class="button dark" href="mailto:${contact}?subject=Request%20the%202026-2028%20partnership%20deck">Request the full deck ${arrow}</a><a class="text-link" href="assets/partnership-brief.pdf" download>Download the public introduction ${arrow}</a></div></div></section>`;
   },
   impact() {
     return `${pageHead("Impact & accountability", "Count the work.<br>Show the difference.", "A useful platform measures not only what it publishes, but what its evidence helps people do.")}${this.metrics()}<section class="wrap impact-detail"><div><span class="eyebrow section-label">Who we reach</span><h2>A shared interest in<br><em>better institutions.</em></h2><dl class="audience-list">${[
@@ -428,7 +429,7 @@ const Publication = {
   },
   country(name) {
     const c = this.countries.find((c) => c[0] === name);
-    return `${pageHead("Country profile / Launch edition", name, c[2])}<section class="wrap country-profile"><div class="country-score"><span class="eyebrow">Supplied illustrative score</span><strong>${c[1]}<small>/100</small></strong><p>Trend in package: ${c[3]}. Not a validated current rating.</p>${link("#/methodology", "Read the scoring note")}</div><div><h2>The research lens</h2><p>${countryNotes[name] || c[2] + " is the country's focus in the supplied editorial programme."}</p><h3>Four diagnostic dimensions</h3><p>Electoral integrity / State capacity / Rule of law / Economic management</p>${name === "Zambia" ? link("#/zambia-2026", "Read the Zambia diagnostic & visual dossier") : `<p>The package supplies a research focus, but no complete country-specific report for this profile. Contact the desk for the publication schedule.</p>`}${link("#/accountability", "Explore the corruption research register")}</div></section>`;
+    return `${pageHead("Country profile / October edition", name, c[2])}<section class="wrap country-profile"><div class="country-score"><span class="eyebrow">${name === "Nigeria" ? "Revised publisher assessment" : "Supplied illustrative score"}</span><strong>${c[1]}<small>/100</small></strong><p>Trend in package: ${c[3]}. Not a validated current rating.</p>${link("#/methodology", "Read the scoring note")}</div><div><h2>The research lens</h2><p>${countryNotes[name] || c[2] + " is the country's focus in the supplied editorial programme."}</p><h3>Four diagnostic dimensions</h3><p>Electoral integrity / State capacity / Rule of law / Economic management</p>${name === "Zambia" ? link("#/zambia-2026", "Read the Zambia diagnostic & visual dossier") : RevisedEdition.articles.some((a) => a.country === name) ? "<p>Full October-edition analysis is available below, with the source record and editorial context.</p>" : `<p>The package supplies a research focus, but no complete country-specific report for this profile. Contact the desk for the publication schedule.</p>`}${link("#/accountability", "Explore the corruption research register")}</div></section>`;
   },
   zambia() {
     return `<article class="article dossier"><div class="article-toolbar">${link("#/diagnostics", "The Reading Room")}<button class="share-button">Share ↗</button></div><span class="eyebrow section-label">Election integrity / Zambia / 14 August 2026 edition</span><h1>Zambia 2026: When results management fails the democratic stress test</h1><p class="standfirst">The voting was peaceful. But the results process - counting, transparency, ballot secrecy - is where democratic credibility is tested.</p><p class="source-note">The African Governance Stethoscope Editorial / Supplied launch report and campaign artwork. Historical edition, not a current election alert.</p><section><h2>The suspension that changed everything</h2><p>The supplied diagnostic examines the Electoral Commission of Zambia's temporary suspension of counting and results announcements on 14 August 2026, following reports of attacks on polling personnel and stolen ballots. Counting subsequently resumed. The publication asks what the interruption revealed about institutional preparedness and public confidence.</p><p>Contemporaneous reporting records both the suspension and its reversal. The supplied artwork captures the concerns of that moment; its risk assessments are the publisher's own, not official electoral results.</p><p><a href="https://times.co.zm/ecz-lifts-suspension-first-election-results-due-at-2200/" target="_blank" rel="noopener noreferrer"><u>Contemporaneous report: ECZ lifts suspension, Times of Zambia ↗</u></a></p></section><section><h2>Governance diagnostic: three pressure points</h2><h3>01 / Late constitutional reforms</h3><p>The supplied report examines the December 2025 constitutional changes, expanded constituencies, mixed-member representation and the time available for implementation. Its central question is whether institutional preparation and public consultation kept pace with the legal changes.</p><h3>02 / Ballot secrecy</h3><p>The publication's observer summary raises concerns about voter identifiers and ballot secrecy. Such concerns require a clear procedural record, the full observer statements and a response from electoral authorities; they should not be read as a final legal finding.</p><h3>03 / Institutions beyond polling day</h3><p>Credibility depends on transparent results management, lawful security responses and independent routes to challenge. The diagnostic looks beyond a peaceful polling day to the full electoral ecosystem.</p></section><section><h2>The prescription</h2><ol class="prescription-list"><li>Publish a transparent incident report with timelines, corrective measures and a public accounting of interruptions.</li><li>Review electoral reforms through a participatory process, with meaningful civil society input before the next cycle.</li><li>Maintain observation beyond results announcements, including grievance mechanisms and judicial review.</li></ol></section><blockquote>Democracy is more than voting day.</blockquote><section><h2>The visual dossier</h2><p>Original publisher-supplied artwork, with readable summaries and full-resolution downloads. The percentages are editorial stress-test assessments; no calculation methodology was supplied.</p><div class="dossier-graphics">${this.graphics

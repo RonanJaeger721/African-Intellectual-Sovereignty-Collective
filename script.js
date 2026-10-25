@@ -204,7 +204,7 @@ const tags = (a) =>
 const meta = (a) =>
   `<div class="story-meta"><span>${a.country}</span><span>${a.minutes} min read</span></div>`;
 const notice =
-  '<div class="notice">The supplied Zambia diagnostic and editorial programme appear first. Commissioned features contain the supplied briefs, not completed investigations. Additional editorial perspectives are labelled as previews.</div>';
+  '<p class="source-note">Full articles from the October edition appear first. Commissioned features and earlier editorial previews remain separately labelled.</p>';
 const pageHead = (kicker, title, description) =>
   `<header class="page-head wrap reveal"><span class="eyebrow section-label">${kicker}</span><h1>${title}</h1><p>${description}</p></header>`;
 
@@ -231,10 +231,11 @@ function home() {
       "",
     )}</select><button class="lens-toggle" aria-label="Pause country tour" title="Pause country tour"><img src="assets/icons/pause.svg" width="18" height="18" alt=""></button></div><p class="country-description" aria-live="off">${countryNotes.Zambia}</p><div class="lens-controls"><span class="lens-count">01 / 11</span><button class="lens-choose">Choose country ${arrow}</button></div><a class="country-link text-link" href="#/country/Zambia">Explore the perspective ${arrow}</a></div></div><div class="hero-scroll">Scroll for a fuller picture ↓</div></div></section>
     ${Publication.introduction()}
+    ${RevisedEdition.cards()}
     ${Publication.pulseGrid()}
     <section class="wrap edition-feature"><div><span class="eyebrow section-label">From the supplied edition / Zambia 2026</span><h2>Beyond the ballot.<br><em>The democratic stress test.</em></h2><p>Read the governance diagnostic, explore the five-part election timeline and download the original pulse-check and observer graphics.</p>${link("#/zambia-2026", "Open the report & visual dossier")}</div><a href="#/zambia-2026"><img src="assets/editorial/Pulse-Check-Zambia.webp" alt="Zambia pulse check: five governance stress-test measures" width="900" height="1002" loading="lazy"></a></section>
     <section class="journal wrap"><span class="eyebrow section-label">On our editorial agenda</span><div class="section-heading"><h2>Look a little <em>closer.</em></h2>${link("#/diagnostics", "All perspectives")}</div><div class="journal-grid"><div><a class="lead-story" href="#/read/${lead.slug}"><div class="story-art editorial-photo"><img src="assets/photos/parliament-1280.webp" srcset="assets/photos/parliament-640.webp 640w, assets/photos/parliament-1280.webp 1280w" sizes="(max-width: 900px) 100vw, 55vw" width="1280" height="736" loading="lazy" alt="South African Parliament seen from the Company Gardens in Cape Town"></div>${tags(lead)}<h3>${lead.title}</h3><p>${lead.excerpt}</p>${meta(lead)}</a><p class="photo-credit">Parliament, Cape Town · Jonathan Beech · <a href="#/credits">Photo credits</a></p></div><div>${[articles[0], articles[2], articles[3]].map((a) => `<a class="side-story" href="#/read/${a.slug}">${tags(a)}<h3>${a.title}</h3><p>${a.excerpt}</p>${meta(a)}</a>`).join("")}</div></div></section>
-    ${catalogue()}
+    ${RevisedEdition.catalogue()}
     <section class="perspective"><div class="wrap perspective-inner"><div><span class="eyebrow section-label">Our point of view</span><h2>A continent.<br>Many realities.<br><em>A fuller picture.</em></h2><p class="perspective-intro">Africa is not a single score or a single story. Our work connects rigorous diagnosis with accountability and the possibility of progress.</p>${link("#/methodology", "How we approach the work")}<div class="perspective-position" aria-hidden="true"><span class="perspective-marker">01</span><span class="perspective-track"><span></span></span><span>03</span></div></div><div>${[
       [
         "01",
@@ -287,6 +288,7 @@ function renderRows(category = "all", query = "", country = "") {
         .includes(query.toLowerCase()),
   );
   const edition = Publication.editionRows(category, query, country);
+  const published = RevisedEdition.rows(category, query, country);
   const previews = filtered.length
     ? filtered
         .map(
@@ -296,7 +298,10 @@ function renderRows(category = "all", query = "", country = "") {
         .join("")
     : "";
   document.querySelector(".reading-list").innerHTML =
-    edition + previews ||
+    published +
+      (!query && category === "all" && !country
+        ? `<details class="earlier-perspectives"><summary>Commissioned features & earlier perspectives</summary>${edition + previews}</details>`
+        : edition + previews) ||
     '<p class="empty-state">No perspectives match your search. Try another topic or country.</p>';
 }
 
@@ -467,7 +472,11 @@ function render() {
   pageProgress.setAttribute("aria-busy", "true");
   lensCleanup();
   experienceCleanup();
-  const segments = location.hash.replace(/^#\/?/, "").split("/");
+  const routePath = location.hash.startsWith("#/")
+    ? location.hash.slice(2)
+    : location.pathname.replace(/^\/|\/$/g, "");
+  const segments = routePath.split("/");
+  const revisedArticle = RevisedEdition.find(routePath);
   const route = segments[0] || "home";
   let country = "";
   try {
@@ -477,7 +486,13 @@ function render() {
   }
   let title = "The African Governance Stethoscope";
   let category = "all";
-  if (route === "home") {
+  if (revisedArticle) {
+    main.innerHTML = RevisedEdition.render(revisedArticle);
+    title = revisedArticle.title;
+  } else if (route === "corrections") {
+    main.innerHTML = RevisedEdition.corrections();
+    title = "Corrections Record";
+  } else if (route === "home") {
     main.innerHTML = home();
     setupMap();
   } else if (
@@ -491,6 +506,11 @@ function render() {
       Publication.countries.some((c) => c[0] === country)
     ) {
       main.innerHTML = Publication.country(country);
+      if (RevisedEdition.rows("all", "", country))
+        main.insertAdjacentHTML(
+          "beforeend",
+          `<section class="wrap reading-list"><h2 class="serif">From the October edition</h2>${RevisedEdition.rows("all", "", country)}</section>`,
+        );
     } else if (route === "country" && !countryNotes[country]) {
       main.innerHTML =
         pageHead(
@@ -535,6 +555,9 @@ function render() {
           : "The Reading Room";
   } else if (route === "accountability" || route === "corruption") {
     main.innerHTML = Publication.tracker();
+    main
+      .querySelector(".tracker-section")
+      .insertAdjacentHTML("afterbegin", RevisedEdition.spotlight("corruption"));
     title = "Anti-Corruption Tracker";
   } else if (route === "impact") {
     main.innerHTML = Publication.impact();
@@ -549,13 +572,16 @@ function render() {
     main.innerHTML = Publication.contactPage();
     title = "Contact";
   } else if (route === "assignment") {
-    main.innerHTML = Publication.assignment(segments[1]);
+    main.innerHTML =
+      segments[1] === "mpesa"
+        ? RevisedEdition.render(RevisedEdition.articles[2])
+        : Publication.assignment(segments[1]);
     title = "Editorial Programme";
   } else if (route === "zambia-2026") {
     main.innerHTML = Publication.zambia();
     title = "Zambia 2026: The Democratic Stress Test";
   } else if (route === "methodology") {
-    main.innerHTML = methodology();
+    main.innerHTML = RevisedEdition.render(RevisedEdition.articles[4]);
     title = "Our Approach";
   } else if (route === "partners") {
     main.innerHTML = Publication.partners();
@@ -602,14 +628,24 @@ function render() {
     title === "The African Governance Stethoscope"
       ? title
       : title + " | The African Governance Stethoscope";
-  document.querySelector('meta[name="description"]').content =
-    route === "read"
+  document.querySelector('meta[name="description"]').content = revisedArticle
+    ? revisedArticle.excerpt
+    : route === "read"
       ? articles.find((a) => a.slug === segments[1])?.excerpt ||
         "Independent African perspectives."
       : main.querySelector(".page-head p")?.textContent ||
         "Read the continent beyond the headline. Governance, accountability, and African progress.";
   navigation.querySelectorAll("a").forEach((a) => {
-    if (a.hash === location.hash) a.setAttribute("aria-current", "page");
+    const activeHash = revisedArticle
+      ? revisedArticle.category === "renaissance"
+        ? "#/renaissance"
+        : revisedArticle.category === "corruption"
+          ? "#/accountability"
+          : revisedArticle.category === "governance"
+            ? "#/diagnostics"
+            : ""
+      : location.hash;
+    if (a.hash === activeHash) a.setAttribute("aria-current", "page");
     else a.removeAttribute("aria-current");
   });
   closeMenu();
@@ -619,6 +655,13 @@ function render() {
   Publication.setup(main);
   experienceCleanup = window.StethoscopeExperience.mount(main, reducedMotion);
   requestAnimationFrame(finishPageLoading);
+  if (revisedArticle && location.hash && !location.hash.startsWith("#/")) {
+    const target = document.getElementById(location.hash.slice(1));
+    if (target)
+      requestAnimationFrame(() =>
+        target.scrollIntoView({ behavior: "instant", block: "start" }),
+      );
+  }
   document.querySelector(".share-button")?.addEventListener("click", () => {
     document.querySelector("#share-url").value = location.href;
     document.querySelector("#share-status").textContent = "";

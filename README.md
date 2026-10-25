@@ -14,6 +14,8 @@ Serve the repository root with a static HTTP server. The current development pre
 - publication.js: restored publisher vision, funder case, country snapshots, monitoring register and visual dossier
 - lens.js: one-pass, four-second country tour with manual selection and route-scoped cleanup
 - photography.js: editorial photograph attribution and licence view
+- edition-data.js / edition.js: revised October 2026 long-form content and shared article rendering
+- scripts/export-edition.mjs: regenerates static article pages, sitemap and robots file
 - experience.js: route-scoped reversible motion, reading progress and accessible auto catalogue
 - assets/: optimized map, identity, cover and partnership PDF
 - collective.html: preserved original company brochure
@@ -25,6 +27,10 @@ Serve the repository root with a static HTTP server. The current development pre
 Home, #/diagnostics, #/accountability, #/renaissance, #/methodology, #/partners, #/impact, #/about, #/contact, #/zambia-2026, #/pulse and #/privacy. Nine supplied country profiles use #/country/Zambia and equivalent country names. Supplied commissioning briefs use #/assignment/mpesa and equivalent identifiers; additional editorial previews use #/read/beyond-the-ballot. Unknown routes display a recovery view.
 
 ## Content status
+
+The 25 October manuscript adds four complete analysis pieces and a revised editorial-policy page. They have clean static routes under diagnostics/, tracker/, renaissance/, pulse/ and about/, while the existing hash routes remain available. The homepage/reading room/catalogue prioritise the new edition. Nigeria's revised supplied assessment is 43/100; its dataset and weights remain unavailable and that limitation is shown. Sources and editorial interpretation are distinguished; public audited accounts and funder records are not claimed to exist without the files. Incompatible early-access and old fixed partnership tiers were removed in favour of the revised independence policy.
+
+After editing edition-data.js, edition.js or the shared index.html shell, run `node scripts/export-edition.mjs` from the repository root and commit the regenerated article directories and sitemap. No installed build dependencies are required. The original revised manuscript, import tool and paragraph-level review record remain private under work/; the client-facing review is under outputs/.
 
 The supplied ZIP includes a strategic blueprint, a future production architecture, a launch checklist, a content calendar, promotional graphics and a demo website. Source files are preserved locally in work/package; they are deliberately excluded from deployment.
 
