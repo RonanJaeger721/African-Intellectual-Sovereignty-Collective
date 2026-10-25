@@ -149,7 +149,7 @@ const revisedArticles = [
       },
       {
         type: "paragraph",
-        text: "Information. Congolese negotiators have repeatedly entered mining talks without the commodity price models, reserve certifications or offtake arithmetic that counterparties hold as a matter of course. A contract agreed under that kind of capacity gap will not look corrupt. It will be formally legitimate and substantively confiscatory, and it will run for decades.",
+        text: "Information. When negotiators enter mining talks without the commodity price models, reserve certifications or offtake arithmetic that counterparties hold, the bargain starts on unequal terms. A contract agreed under that kind of capacity gap can be formally legitimate and still deliver poor public value for decades. Establishing that this happened in a particular negotiation requires its own documentary record.",
       },
       {
         type: "paragraph",
